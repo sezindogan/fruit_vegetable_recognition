@@ -2,6 +2,9 @@ import os
 import cv2
 import albumentations as A
 
+input_dir = "data/raw"
+output_dir = "data/processed"
+
 #photometric
 photometric = A.OneOf([
     A.RandomBrightnessContrast(
@@ -36,8 +39,8 @@ geometric = A.Compose([
 ])
 
 AUG = A.Compose([
-    photometric,
-    geometric
+    geometric,
+    photometric
 ])
 
 # augment single image
@@ -75,10 +78,10 @@ def augment_dataset(
 
         # save original
         base = os.path.splitext(fname)[0]
-        cv2.imwrite(
+        """cv2.imwrite(
             os.path.join(output_folder, f"{base}_orig.jpg"),
             cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-        )
+        )"""
 
         # save augmentations
         for i, aug in enumerate(augmented_imgs):
@@ -92,5 +95,5 @@ def augment_dataset(
     print("Done.")
 
 
-# run
-augment_dataset("data/raw", "data/processed")
+if __name__ == "__main__":
+    augment_dataset(input_dir, output_dir)
