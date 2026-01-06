@@ -200,8 +200,8 @@ class SoftMarginSVMScratch:
         print(f"\n{'='*70}")
         print("SOLUTION SUMMARY")
         print(f"{'='*70}")
-        print(f"Bias term: b* = {self.b:.6f}")
-        print(f"Weight vector: w* = {self.w}")
+        #print(f"Bias term: b* = {self.b:.6f}")
+        #print(f"Weight vector: w* = {self.w}")
         print(f"  ||w*|| = {np.linalg.norm(self.w):.6f}")
         print(f"  Margin = 1/||w*|| = {1/np.linalg.norm(self.w):.6f}")
         
@@ -270,7 +270,7 @@ from sklearn.preprocessing import StandardScaler
 
 print("Loading data...")
 y = pd.read_csv("labels.csv", index_col=0).to_numpy().flatten()
-X_image = pd.read_csv("image.csv", index_col=0).to_numpy()
+X_image = pd.read_csv("fused_reduced.csv", index_col=0).to_numpy()
 
 # Standardize features
 scaler = StandardScaler()
@@ -435,74 +435,44 @@ X_2d = pca.fit_transform(X_binary)
 # Create visualization
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
-# Visualize decision surface (2D Approximation)
-# Train a 2D SVM specifically for visualization purposes
-print(f"\nTraining 2D SVM on PCA features for visualization...")
-svm_viz = SoftMarginSVMScratch(C=1.0)
-svm_viz.fit(X_2d, y_binary_numeric)
-
-x_min, x_max = X_2d[:, 0].min() - 1, X_2d[:, 0].max() + 1
-y_min, y_max = X_2d[:, 1].min() - 1, X_2d[:, 1].max() + 1
-xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.05),
-                     np.arange(y_min, y_max, 0.05))
-
-# Predict for meshgrid using 2D model
-Z = svm_viz.predict(np.c_[xx.ravel(), yy.ravel()])
-Z = Z.reshape(xx.shape)
+# Visualize decision surface using PCA projection
 
 # Plot 1: Support vectors vs. all points
 ax1 = axes[0]
 
-# Background decision regions
-ax1.contourf(xx, yy, Z, alpha=0.2, cmap=plt.cm.coolwarm)
+# Plot All Training Points
+scatter = ax1.scatter(X_2d[:, 0], X_2d[:, 1], c=y_binary_numeric, cmap=plt.cm.bwr, 
+                      alpha=0.3, s=20, label='Training points')
 
-# Plot Training Points (faint)
-colors = ['red' if y_binary_numeric[i] == 1.0 else 'blue' for i in range(len(y_binary_numeric))]
-ax1.scatter(X_2d[:, 0], X_2d[:, 1], c=colors, alpha=0.2, s=15, label='Training points')
+# Highlight Support Vectors (from the HIGH-DIM model)
+sv_indices = svm_main.support_vector_indices
+sv_2d = X_2d[sv_indices]
 
-# Highlight Support Vectors (from the 2D model so they align with margins)
-sv_viz_indices = svm_viz.support_vector_indices
-sv_2d_viz = X_2d[sv_viz_indices]
-ax1.scatter(sv_2d_viz[:, 0], sv_2d_viz[:, 1], 
-            facecolors='none', 
-            edgecolors='black', 
-            s=60,             
-            linewidths=0.8,
-            alpha=0.8,
-            label=f'Support Vectors (n={len(sv_viz_indices)})')
+# Differentiate SVs by class for the legend
+sv_pos_mask = y_binary_numeric[sv_indices] == 1.0
+sv_neg_mask = y_binary_numeric[sv_indices] == -1.0
 
-# Plot Decision Boundary and Margins
-w_viz = svm_viz.w
-b_viz = svm_viz.b
-x_line = np.linspace(x_min, x_max, 100)
-if abs(w_viz[1]) > 1e-4:
-    y_db = -(w_viz[0] * x_line + b_viz) / w_viz[1]
-    y_m1 = -(w_viz[0] * x_line + b_viz - 1) / w_viz[1]
-    y_m2 = -(w_viz[0] * x_line + b_viz + 1) / w_viz[1]
-    
-    ax1.plot(x_line, y_db, 'k-', linewidth=2, label='Decision Boundary')
-    ax1.plot(x_line, y_m1, 'k--', linewidth=1, label='Margins')
-    ax1.plot(x_line, y_m2, 'k--', linewidth=1)
-    
-    # Clip view to data range
-    ax1.set_ylim(y_min, y_max)
-    ax1.set_xlim(x_min, x_max)
+ax1.scatter(sv_2d[sv_pos_mask, 0], sv_2d[sv_pos_mask, 1], 
+            facecolors='none', edgecolors='darkred', s=80, linewidths=1.5,
+            label=f'SV Class {pos_class} (High-Dim)')
+            
+ax1.scatter(sv_2d[sv_neg_mask, 0], sv_2d[sv_neg_mask, 1], 
+            facecolors='none', edgecolors='darkblue', s=80, linewidths=1.5,
+            label=f'SV Class {neg_class} (High-Dim)')
 
 # Highlight farthest points (Still useful to see)
 for label, idx in farthest_indices.items():
     class_name = pos_class if label == 1.0 else neg_class
+    color = 'red' if label == 1.0 else 'blue'
     ax1.scatter(X_2d[idx, 0], X_2d[idx, 1], 
-                marker='*', s=150, c='gold', edgecolors='black', linewidths=1.0, zorder=10,
-                label=f'Farthest ({class_name})')
+                marker='*', s=200, c='gold', edgecolors=color, linewidths=1.5, zorder=10,
+                label=f'Farthest {class_name}')
 
 ax1.set_xlabel('PC1')
 ax1.set_ylabel('PC2')
-ax1.set_title(f'SVM Decision Regions (2D Model)\\n{pos_class} (Red) vs {neg_class} (Blue)')
-# Legend with unique entries
-handles, labels = ax1.get_legend_handles_labels()
-by_label = dict(zip(labels, handles))
-ax1.legend(by_label.values(), by_label.keys(), loc='best', fontsize='small')
-ax1.grid(False)
+ax1.set_title(f'PCA Projection of High-Dim SVM SVs\\n{pos_class} vs {neg_class}')
+ax1.legend(loc='best', fontsize='small')
+ax1.grid(True, alpha=0.3)
 
 # Plot 2: Slack variables
 ax2 = axes[1]
