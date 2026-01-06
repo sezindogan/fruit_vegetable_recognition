@@ -72,7 +72,7 @@ class SoftMarginSVMScratch:
         self.support_vector_labels = None
         self.slack_variables = None
         
-    def fit(self, X, y):
+    def fit(self, X, y, sample_ids=None):
         """
         Train the soft-margin SVM using QP solver.
         
@@ -213,15 +213,25 @@ class SoftMarginSVMScratch:
         print(f"\nSupport Vectors:")
         print(f"  Total support vectors: {len(self.support_vector_indices)}")
         print(f"  Percentage: {100*len(self.support_vector_indices)/N:.1f}%")
-        print(f"  Indices: {self.support_vector_indices[:20]}{'...' if len(self.support_vector_indices) > 20 else ''}")
+        if sample_ids is not None:
+            print(f"  Indices: {sample_ids[self.support_vector_indices].tolist()}")
+        else:
+            print(f"  Indices: {self.support_vector_indices.tolist()}")
         
         # Find points on exact margin (y(w^T x + b) = 1)
         on_margin = np.abs(margins - 1) < tolerance
         print(f"  Points exactly on margin: {np.sum(on_margin)}")
         
         # Find misclassified points (y(w^T x + b) < 0)
-        misclassified = margins < 0
-        print(f"  Misclassified points: {np.sum(misclassified)}")
+        misclassified_mask = margins < 0
+        num_misclassified = np.sum(misclassified_mask)
+        print(f"  Misclassified points: {num_misclassified}")
+        if num_misclassified > 0:
+            misclassified_indices = np.where(misclassified_mask)[0]
+            if sample_ids is not None:
+                print(f"  Misclassified indices: {sample_ids[misclassified_indices].tolist()}")
+            else:
+                print(f"  Misclassified indices: {misclassified_indices.tolist()}")
         
         return self
     
@@ -233,7 +243,7 @@ class SoftMarginSVMScratch:
         """Compute decision function values."""
         return X @ self.w + self.b
     
-    def get_farthest_points(self, X, y):
+    def get_farthest_points(self, X, y, sample_ids=None):
         """
         Find the data points that are farthest from the hyperplane in each category.
         
@@ -256,7 +266,13 @@ class SoftMarginSVMScratch:
             class_indices = np.where(mask)[0]
             
             farthest_idx_in_class = np.argmax(class_distances)
-            farthest_indices[label] = class_indices[farthest_idx_in_class]
+            internal_idx = class_indices[farthest_idx_in_class]
+            
+            if sample_ids is not None:
+                farthest_indices[label] = sample_ids[internal_idx]
+            else:
+                farthest_indices[label] = internal_idx
+                
             farthest_distances[label] = class_distances[farthest_idx_in_class]
         
         return farthest_indices, farthest_distances
@@ -269,8 +285,10 @@ from itertools import combinations
 from sklearn.preprocessing import StandardScaler
 
 print("Loading data...")
-y = pd.read_csv("labels.csv", index_col=0).to_numpy().flatten()
-X_image = pd.read_csv("fused_reduced.csv", index_col=0).to_numpy()
+df_labels = pd.read_csv("labels.csv", index_col=0)
+y = df_labels.to_numpy().flatten()
+indices = df_labels.index.to_numpy() # Get original sample IDs
+X_image = pd.read_csv("image.csv", index_col=0).to_numpy()
 
 # Standardize features
 scaler = StandardScaler()
@@ -311,12 +329,69 @@ for pair_idx, (class_a, class_b) in enumerate(class_pairs):
     
     # Train SVM
     svm = SoftMarginSVMScratch(C=C_default)
-    svm.fit(X_pair, y_pair_numeric)
+    # Pass the original indices corresponding to this pair
+    indices_pair = indices[binary_mask]
+    svm.fit(X_pair, y_pair_numeric, sample_ids=indices_pair)
     
     # Compute accuracy
     y_pred = svm.predict(X_pair)
     accuracy = np.mean(y_pred == y_pair_numeric)
     
+    # Calculate farthest points for this pair
+    farthest_indices, farthest_distances = svm.get_farthest_points(X_pair, y_pair_numeric, sample_ids=indices_pair)
+    
+    print("\n  Farthest points from hyperplane:")
+    for label, idx in farthest_indices.items():
+        class_name = class_a if label == 1.0 else class_b
+        print(f"    Class {class_name} ({label}): Index {idx}, Distance = {farthest_distances[label]:.4f}")
+
+
+
+    # Analyze SV distances (Inline logic)
+    print(f"\n  Cross-class support vector distances:")
+    
+    # Get support vectors by class from the trained SVM
+    sv_pos_mask = svm.support_vector_labels == 1.0
+    sv_neg_mask = svm.support_vector_labels == -1.0
+    
+    sv_pos = svm.support_vectors[sv_pos_mask]
+    sv_neg = svm.support_vectors[sv_neg_mask]
+    
+    min_dist = np.nan
+    mean_dist = np.nan
+    max_dist = np.nan
+    
+    if len(sv_pos) > 0 and len(sv_neg) > 0:
+        dists = cdist(sv_pos, sv_neg, metric='euclidean')
+        min_dist = dists.min()
+        mean_dist = dists.mean()
+        max_dist = dists.max()
+        
+        print(f"    Min distance: {min_dist:.4f}")
+        print(f"    Mean distance: {mean_dist:.4f}")
+        print(f"    Max distance: {max_dist:.4f}")
+        
+        # Find closest pair
+        min_idx = np.unravel_index(dists.argmin(), dists.shape)
+        
+        # Map back to original IDs using indices_pair
+        # 1. Get internal X indices for the SVs involved
+        # sv_pos corresponds to indices where (support_vector_labels == 1.0)
+        # support_vector_indices contains indices into X for ALL SVs.
+        pos_indices_in_X = svm.support_vector_indices[sv_pos_mask]
+        neg_indices_in_X = svm.support_vector_indices[sv_neg_mask]
+        
+        closest_pos_idx_in_X = pos_indices_in_X[min_idx[0]]
+        closest_neg_idx_in_X = neg_indices_in_X[min_idx[1]]
+        
+        # 2. Get original IDs
+        id_1 = indices_pair[closest_pos_idx_in_X]
+        id_2 = indices_pair[closest_neg_idx_in_X]
+        
+        print(f"    Closest pair: Class {class_a} ID {id_1} <-> Class {class_b} ID {id_2}")
+    else:
+        print("    Not enough support vectors to calculate distances.")
+
     # Store results
     all_pair_results.append({
         'Class_A': class_a,
@@ -327,14 +402,17 @@ for pair_idx, (class_a, class_b) in enumerate(class_pairs):
         'SV_Percent': 100 * len(svm.support_vector_indices) / len(y_pair),
         'Total_Slack': np.sum(svm.slack_variables),
         'Margin': 1 / np.linalg.norm(svm.w),
-        'Accuracy': accuracy
+        'Accuracy': accuracy,
+        'Min_SV_Dist': min_dist,
+        'Mean_SV_Dist': mean_dist
     })
     
     all_pair_svms[(class_a, class_b)] = {
         'svm': svm,
         'X': X_pair,
         'y': y_pair,
-        'y_numeric': y_pair_numeric
+        'y_numeric': y_pair_numeric,
+        'sample_ids': indices_pair
     }
 
 # Summary table
@@ -351,17 +429,21 @@ print(f"{'='*70}")
 
 sorted_by_accuracy = pair_results_df.sort_values('Accuracy', ascending=False)
 print("\nTop 5 EASIEST pairs to separate (highest accuracy):")
-print(sorted_by_accuracy.head(5)[['Class_A', 'Class_B', 'Accuracy', 'Margin', 'Num_SV']].to_string(index=False))
+print(sorted_by_accuracy.head(5)[['Class_A', 'Class_B', 'Accuracy', 'Margin', 'Num_SV', 'Min_SV_Dist']].to_string(index=False))
 
 print("\nTop 5 HARDEST pairs to separate (lowest accuracy):")
-print(sorted_by_accuracy.tail(5)[['Class_A', 'Class_B', 'Accuracy', 'Margin', 'Num_SV']].to_string(index=False))
+print(sorted_by_accuracy.tail(5)[['Class_A', 'Class_B', 'Accuracy', 'Margin', 'Num_SV', 'Min_SV_Dist']].to_string(index=False))
 
 sorted_by_margin = pair_results_df.sort_values('Margin', ascending=False)
 print("\nTop 5 pairs with LARGEST margin:")
-print(sorted_by_margin.head(5)[['Class_A', 'Class_B', 'Margin', 'Accuracy', 'SV_Percent']].to_string(index=False))
+print(sorted_by_margin.head(5)[['Class_A', 'Class_B', 'Margin', 'Accuracy', 'SV_Percent', 'Min_SV_Dist']].to_string(index=False))
 
 print("\nTop 5 pairs with SMALLEST margin:")
-print(sorted_by_margin.tail(5)[['Class_A', 'Class_B', 'Margin', 'Accuracy', 'SV_Percent']].to_string(index=False))
+print(sorted_by_margin.tail(5)[['Class_A', 'Class_B', 'Margin', 'Accuracy', 'SV_Percent', 'Min_SV_Dist']].to_string(index=False))
+
+sorted_by_dist = pair_results_df.sort_values('Min_SV_Dist', ascending=True)
+print("\nTop 5 pairs with SMALLEST support vector distance (most likely to overlap):")
+print(sorted_by_dist.head(5)[['Class_A', 'Class_B', 'Min_SV_Dist', 'Mean_SV_Dist', 'Accuracy', 'Margin']].to_string(index=False))
 
 # ============================================================================
 # DETAILED ANALYSIS FOR TOP 2 CLASSES (for visualization)
@@ -382,30 +464,31 @@ svm_main = pair_data['svm']
 X_binary = pair_data['X']
 y_binary = pair_data['y']
 y_binary_numeric = pair_data['y_numeric']
+sample_ids_main = pair_data['sample_ids']
 
-# Also run C value comparison for this pair
-print(f"\nC-value comparison for {pos_class} vs {neg_class}:")
-C_values = [0.01, 0.1, 1.0, 10.0, 100.0]
-results = []
-svms = {}
-
-for C in C_values:
-    svm = SoftMarginSVMScratch(C=C)
-    svm.fit(X_binary, y_binary_numeric)
-    y_pred = svm.predict(X_binary)
-    accuracy = np.mean(y_pred == y_binary_numeric)
-    
-    results.append({
-        'C': C,
-        'Num_SV': len(svm.support_vector_indices),
-        'Total_Slack': np.sum(svm.slack_variables),
-        'Margin': 1/np.linalg.norm(svm.w),
-        'Accuracy': accuracy
-    })
-    svms[C] = svm
-
-results_df = pd.DataFrame(results)
-print(results_df.to_string(index=False))
+# # Also run C value comparison for this pair
+# print(f"\nC-value comparison for {pos_class} vs {neg_class}:")
+# C_values = [0.01, 0.1, 1.0, 10.0, 100.0]
+# results = []
+# svms = {}
+#
+# for C in C_values:
+#     svm = SoftMarginSVMScratch(C=C)
+#     svm.fit(X_binary, y_binary_numeric)
+#     y_pred = svm.predict(X_binary)
+#     accuracy = np.mean(y_pred == y_binary_numeric)
+#     
+#     results.append({
+#         'C': C,
+#         'Num_SV': len(svm.support_vector_indices),
+#         'Total_Slack': np.sum(svm.slack_variables),
+#         'Margin': 1/np.linalg.norm(svm.w),
+#         'Accuracy': accuracy
+#     })
+#     svms[C] = svm
+#
+# results_df = pd.DataFrame(results)
+# print(results_df.to_string(index=False))
 
 
 # ============================================================================
@@ -417,10 +500,10 @@ print("TASK 1.2(a): Visual Inspection of Support Vectors")
 print(f"{'='*70}")
 
 # Use SVM with C=1.0 for detailed analysis
-svm_main = svms[1.0]
+# svm_main = svms[1.0]
 
 # Get farthest points
-farthest_indices, farthest_distances = svm_main.get_farthest_points(X_binary, y_binary_numeric)
+farthest_indices, farthest_distances = svm_main.get_farthest_points(X_binary, y_binary_numeric, sample_ids=sample_ids_main)
 
 print("\nFarthest points from hyperplane in each category:")
 for label, idx in farthest_indices.items():
@@ -461,12 +544,18 @@ ax1.scatter(sv_2d[sv_neg_mask, 0], sv_2d[sv_neg_mask, 1],
             label=f'SV Class {neg_class} (High-Dim)')
 
 # Highlight farthest points (Still useful to see)
-for label, idx in farthest_indices.items():
+# Highlight farthest points (Still useful to see)
+for label, original_id in farthest_indices.items():
     class_name = pos_class if label == 1.0 else neg_class
     color = 'red' if label == 1.0 else 'blue'
-    ax1.scatter(X_2d[idx, 0], X_2d[idx, 1], 
-                marker='*', s=200, c='gold', edgecolors=color, linewidths=1.5, zorder=10,
-                label=f'Farthest {class_name}')
+    
+    # Map original ID back to internal index for plotting
+    internal_pos = np.where(sample_ids_main == original_id)[0]
+    if len(internal_pos) > 0:
+        internal_idx = internal_pos[0]
+        ax1.scatter(X_2d[internal_idx, 0], X_2d[internal_idx, 1], 
+                    marker='*', s=200, c='gold', edgecolors=color, linewidths=1.5, zorder=10,
+                    label=f'Farthest {class_name}')
 
 ax1.set_xlabel('PC1')
 ax1.set_ylabel('PC2')
@@ -523,9 +612,26 @@ if len(sv_class1) > 0 and len(sv_class2) > 0:
     # Find closest pairs
     min_dist_idx = np.unravel_index(cross_class_distances.argmin(), 
                                      cross_class_distances.shape)
+    
+    # Map back to original IDs
+    # min_dist_idx[0] is index in sv_class1
+    # min_dist_idx[1] is index in sv_class2
+    
+    # Get internal index of these SVs in X_binary
+    # sv_class1 comes from svm_main.support_vectors[sv_class1_mask]
+    # We need the corresponding index in support_vector_indices
+    
+    sv_indices_class1 = svm_main.support_vector_indices[sv_class1_mask]
+    sv_indices_class2 = svm_main.support_vector_indices[sv_class2_mask]
+    
+    internal_idx_1 = sv_indices_class1[min_dist_idx[0]]
+    internal_idx_2 = sv_indices_class2[min_dist_idx[1]]
+    
+    real_id_1 = sample_ids_main[internal_idx_1]
+    real_id_2 = sample_ids_main[internal_idx_2]
+    
     print(f"\n  Closest SV pair:")
-    print(f"    Class {pos_class} SV index: {min_dist_idx[0]}")
-    print(f"    Class {neg_class} SV index: {min_dist_idx[1]}")
+    print(f"    Class {pos_class} ID {real_id_1} <-> Class {neg_class} ID {real_id_2}")
     print(f"    Distance: {cross_class_distances[min_dist_idx]:.4f}")
     
     # Compute confusion matrix to check if closest SVs correspond to confused classes
