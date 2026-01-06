@@ -1,0 +1,128 @@
+Loading data...
+Dataset shape: (3071, 354)
+Number of classes: 5
+Classes: ['apple' 'banana' 'mandarin' 'onion' 'potato']
+Samples per class: {'potato': 692, 'onion': 638, 'mandarin': 628, 'apple': 609, 'banana': 504}
+
+======================================================================
+FEATURE SET COMPARISON
+======================================================================
+
+Feature dimensions:
+  Image: 19 features
+  Text: 300 features
+  Meta: 34 features
+  Fused: 354 features
+
+Feature Set Performance (SVM RBF, C=10):
+Feature Set  Num Features  Test Accuracy  CV Mean  CV Std
+      Image            19         0.8179   0.7717  0.1277
+       Text           300         0.8016   0.7861  0.0153
+       Meta            34         0.7626   0.7779  0.0228
+      Fused           354         0.9642   0.9518  0.0056
+
+=> Best feature set: Fused
+
+Saved feature comparison to 'feature_comparison.png'
+
+Using 'Image' features for remaining tasks.
+
+======================================================================
+TASK 1.1: Benchmarking Classifiers
+======================================================================
+
+Training Logistic Regression...
+  > Grid searching...
+  > Re-training best model for time measurement...
+
+Training SVM (Linear)...
+  > Grid searching...
+  > Re-training best model for time measurement...
+
+Training Logistic Regression (Poly)...
+  > Grid searching...
+  > Re-training best model for time measurement...
+
+Training SVM (RBF)...
+  > Grid searching...
+  > Re-training best model for time measurement...
+
+Training SVM (Poly)...
+  > Grid searching...
+  > Re-training best model for time measurement...
+
+Training k-NN...
+  > Grid searching...
+  > Re-training best model for time measurement...
+
+Training Naive Bayes...
+  > Grid searching...
+  > Re-training best model for time measurement...
+
+Training Random Forest...
+  > Grid searching...
+  > Re-training best model for time measurement...
+
+----------------------------------------------------------------------
+CLASSIFIER BENCHMARK RESULTS
+----------------------------------------------------------------------
+                Classifier                                                      Best Params  CV Accuracy  Test Accuracy  Training Time (s)
+       Logistic Regression                                                       {'C': 100}       0.6893         0.6878             0.2089
+              SVM (Linear)                                                       {'C': 100}       0.7191         0.7122             1.6540
+Logistic Regression (Poly)                                {'clf__C': 10, 'poly__degree': 3}       0.8721         0.8764             9.0649
+                 SVM (RBF)                                         {'C': 100, 'gamma': 0.1}       0.8506         0.8520             0.1213
+                SVM (Poly)                        {'C': 100, 'degree': 3, 'gamma': 'scale'}       0.8322         0.8244             0.1873
+                      k-NN {'metric': 'euclidean', 'n_neighbors': 3, 'weights': 'distance'}       0.7899         0.7886             0.0010
+               Naive Bayes                                         {'var_smoothing': 1e-09}       0.4316         0.4195             0.0030
+             Random Forest                           {'max_depth': 20, 'n_estimators': 200}       0.8493         0.8439             1.6850
+
+----------------------------------------------------------------------
+HYPERPARAMETER CHOICES
+----------------------------------------------------------------------
+Logistic Regression: Linear Logistic Regression (L2 regularization)
+  Search space: {'C': [0.001, 0.01, 0.1, 1, 10, 100]}
+SVM (Linear): Linear SVM (Soft-margin)
+  Search space: {'C': [0.001, 0.01, 0.1, 1, 10, 100]}
+Logistic Regression (Poly): Polynomial Logistic Regression (Grid Search Degree 2 vs 3)
+  Search space: {'poly__degree': [2, 3], 'clf__C': [0.001, 0.01, 0.1, 1, 10, 100]}
+SVM (RBF): SVM with RBF Kernel
+  Search space: {'C': [0.1, 1, 10, 100], 'gamma': ['scale', 'auto', 0.01, 0.1]}
+SVM (Poly): SVM with Polynomial Kernel
+  Search space: {'degree': [2, 3], 'C': [0.1, 1, 10, 100], 'gamma': ['scale', 'auto']}
+k-NN: k-NN with hyperparameter tuning
+  Search space: {'n_neighbors': [3, 5, 7, 9, 11, 15], 'weights': ['uniform', 'distance'], 'metric': ['euclidean', 'manhattan']}
+Naive Bayes: Gaussian Naive Bayes
+  Search space: {'var_smoothing': [1e-09, 1e-08, 1e-07]}
+Random Forest: Random Forest Ensemble
+  Search space: {'n_estimators': [50, 100, 200], 'max_depth': [None, 10, 20, 30]}
+
+Saved classifier benchmark to 'classifier_benchmark.png'
+
+======================================================================
+TASK 1.3: Classification Performance Metrics
+======================================================================
+
+Performance Metrics Comparison:
+                Classifier  Accuracy  Precision (macro)  Recall (macro)  F1 (macro)
+       Logistic Regression    0.6878             0.6949          0.6930      0.6933
+              SVM (Linear)    0.7122             0.7334          0.7169      0.7176
+Logistic Regression (Poly)    0.8764             0.8791          0.8763      0.8774
+                 SVM (RBF)    0.8520             0.8547          0.8525      0.8535
+                SVM (Poly)    0.8244             0.8265          0.8262      0.8261
+                      k-NN    0.7886             0.7983          0.7893      0.7921
+               Naive Bayes    0.4195             0.4854          0.4274      0.4214
+             Random Forest    0.8439             0.8466          0.8435      0.8448
+
+----------------------------------------------------------------------
+LINEARITY ANALYSIS
+----------------------------------------------------------------------
+Linear SVM Accuracy: 0.7122
+RBF SVM Accuracy: 0.8520
+Logistic Regression Accuracy: 0.6878
+Polynomial LogReg Accuracy: 0.8764
+
+Conclusion: Dataset appears HIGHLY NON-LINEAR (Improvement: 16.42%)
+
+======================================================================
+TASK 2.1: PCA - Dimensionality Reduction
+======================================================================

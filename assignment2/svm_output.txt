@@ -1,0 +1,848 @@
+Loading data...
+Total samples: 3071
+All classes (5): ['apple' 'banana' 'mandarin' 'onion' 'potato']
+
+Total class pairs to compare: 10
+
+######################################################################
+CLASS PAIR 1/10: apple vs banana
+######################################################################
+  Class +1: apple (609 samples)
+  Class -1: banana (504 samples)
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1113
+Feature dimension: d = 19
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1133, 1133) (objective quadratic term)
+  p: (1133,) (objective linear term)
+  A: (2226, 1133) (constraint matrix, 2226 constraints)
+  c: (2226,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 251.513109
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = 1.041154
+Weight vector: w* = [-0.23097934  0.57658952  2.86183814  1.69382952  2.13787145  1.76964158
+ -2.85711198 -2.27158203  2.86183814 -2.31807946  0.27142234 -0.27414671
+  0.33107094  0.08567461  1.138501    0.02097755  2.05206376 -0.44312081
+ -4.20719976]
+  ||w*|| = 8.348901
+  Margin = 1/||w*|| = 0.119776
+
+Slack variables (ε):
+  Total violation: Σε = 216.661037
+  Max slack: 5.651332
+  Points with slack > 0: 280
+
+Support Vectors:
+  Total support vectors: 294
+  Percentage: 26.4%
+  Indices: [  3   6  10  11  41  45  59  60  63  66  67  75  83  85  87  98 100 123
+ 126 127]...
+  Points exactly on margin: 14
+  Misclassified points: 81
+
+######################################################################
+CLASS PAIR 2/10: apple vs mandarin
+######################################################################
+  Class +1: apple (609 samples)
+  Class -1: mandarin (628 samples)
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1237
+Feature dimension: d = 19
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1257, 1257) (objective quadratic term)
+  p: (1257,) (objective linear term)
+  A: (2474, 1257) (constraint matrix, 2474 constraints)
+  c: (2474,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 537.357904
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -0.481670
+Weight vector: w* = [-1.93891914 -1.3911562   2.27923837  0.30198299  0.92752416  2.83346553
+ -1.04077052 -3.16358399  2.27923837 -4.61870086  1.92882532  0.1350454
+ -0.71385527  0.16290645  1.12199355  0.9770852   2.27460026 -0.99092449
+ -1.71031455]
+  ||w*|| = 8.547378
+  Margin = 1/||w*|| = 0.116995
+
+Slack variables (ε):
+  Total violation: Σε = 500.829067
+  Max slack: 4.679879
+  Points with slack > 0: 569
+
+Support Vectors:
+  Total support vectors: 580
+  Percentage: 46.9%
+  Indices: [ 5  6  9 10 11 31 43 46 47 48 49 51 52 54 57 61 63 64 66 68]...
+  Points exactly on margin: 11
+  Misclassified points: 186
+
+######################################################################
+CLASS PAIR 3/10: apple vs onion
+######################################################################
+  Class +1: apple (609 samples)
+  Class -1: onion (638 samples)
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1247
+Feature dimension: d = 19
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1267, 1267) (objective quadratic term)
+  p: (1267,) (objective linear term)
+  A: (2494, 1267) (constraint matrix, 2494 constraints)
+  c: (2494,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 733.966612
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = 0.317849
+Weight vector: w* = [ 5.47179299  0.57803322 -0.96360497  0.39157056  0.01032628  0.48556415
+ -2.7656653  -1.92276504 -0.96360497 -1.85741697  0.94476303  0.91027285
+ -0.74154758  0.09675454 -0.27083437 -0.03223969  1.87345706  0.31635605
+  0.79134133]
+  ||w*|| = 7.342194
+  Margin = 1/||w*|| = 0.136199
+
+Slack variables (ε):
+  Total violation: Σε = 707.012708
+  Max slack: 3.388249
+  Points with slack > 0: 750
+
+Support Vectors:
+  Total support vectors: 767
+  Percentage: 61.5%
+  Indices: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 16 17 18 20 21]...
+  Points exactly on margin: 17
+  Misclassified points: 311
+
+######################################################################
+CLASS PAIR 4/10: apple vs potato
+######################################################################
+  Class +1: apple (609 samples)
+  Class -1: potato (692 samples)
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1301
+Feature dimension: d = 19
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1321, 1321) (objective quadratic term)
+  p: (1321,) (objective linear term)
+  A: (2602, 1321) (constraint matrix, 2602 constraints)
+  c: (2602,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 719.259082
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -0.079030
+Weight vector: w* = [ 7.54647797  2.30600953  0.5159421   1.91512581  1.15916856  1.70497349
+ -7.41553017 -1.73300571  0.5159421  -2.3884159   1.43925035  1.62172673
+ -1.05457454  0.32568262  0.25056162  0.23180643  1.21607519 -0.35111541
+ -1.90299546]
+  ||w*|| = 12.069603
+  Margin = 1/||w*|| = 0.082853
+
+Slack variables (ε):
+  Total violation: Σε = 646.421429
+  Max slack: 3.781858
+  Points with slack > 0: 785
+
+Support Vectors:
+  Total support vectors: 799
+  Percentage: 61.4%
+  Indices: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 23 27 28]...
+  Points exactly on margin: 14
+  Misclassified points: 260
+
+######################################################################
+CLASS PAIR 5/10: banana vs mandarin
+######################################################################
+  Class +1: banana (504 samples)
+  Class -1: mandarin (628 samples)
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1132
+Feature dimension: d = 19
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1152, 1152) (objective quadratic term)
+  p: (1152,) (objective linear term)
+  A: (2264, 1152) (constraint matrix, 2264 constraints)
+  c: (2264,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 459.890004
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -2.002246
+Weight vector: w* = [-2.29902766 -2.40463359 -1.48726621 -2.89983428 -1.28598949 -0.61135841
+  3.58903748  1.26179011 -1.48726621  0.02837904  0.85377679  0.1288345
+ -1.08802433  0.50075062 -0.29180809  0.14006285 -0.55849642  0.20417658
+  3.78529588]
+  ||w*|| = 7.574253
+  Margin = 1/||w*|| = 0.132026
+
+Slack variables (ε):
+  Total violation: Σε = 431.205349
+  Max slack: 6.567294
+  Points with slack > 0: 479
+
+Support Vectors:
+  Total support vectors: 493
+  Percentage: 43.6%
+  Indices: [ 8 17 19 20 21 23 26 27 33 43 47 59 60 61 63 69 79 82 83 84]...
+  Points exactly on margin: 14
+  Misclassified points: 160
+
+######################################################################
+CLASS PAIR 6/10: banana vs onion
+######################################################################
+  Class +1: banana (504 samples)
+  Class -1: onion (638 samples)
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1142
+Feature dimension: d = 19
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1162, 1162) (objective quadratic term)
+  p: (1162,) (objective linear term)
+  A: (2284, 1162) (constraint matrix, 2284 constraints)
+  c: (2284,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 144.158120
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -1.551890
+Weight vector: w* = [ 1.52283835e+00 -4.19387168e+00 -2.77572556e+00 -2.08784318e+00
+ -9.04212335e-01  2.72054659e-03  3.78989443e-01  2.00029014e+00
+ -2.77572556e+00  2.43776802e+00 -8.57040203e-01 -1.43037559e-01
+ -2.97092616e-01 -7.03532172e-03 -1.79617868e+00 -8.95548341e-01
+  2.17403759e-01  6.33110868e-01  2.33139480e+00]
+  ||w*|| = 7.831740
+  Margin = 1/||w*|| = 0.127686
+
+Slack variables (ε):
+  Total violation: Σε = 113.490042
+  Max slack: 2.899991
+  Points with slack > 0: 169
+
+Support Vectors:
+  Total support vectors: 181
+  Percentage: 15.8%
+  Indices: [ 14  52  76  85 103 171 173 201 227 233 269 296 317 324 330 332 338 340
+ 341 344]...
+  Points exactly on margin: 12
+  Misclassified points: 38
+
+######################################################################
+CLASS PAIR 7/10: banana vs potato
+######################################################################
+  Class +1: banana (504 samples)
+  Class -1: potato (692 samples)
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1196
+Feature dimension: d = 19
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1216, 1216) (objective quadratic term)
+  p: (1216,) (objective linear term)
+  A: (2392, 1216) (constraint matrix, 2392 constraints)
+  c: (2392,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 175.949002
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -2.598703
+Weight vector: w* = [ 2.03999074 -4.40299943 -3.38646393 -1.76636887 -2.26033197  0.61029366
+  0.57524404  2.47624454 -3.38646393  1.68287308 -0.39708659 -0.4827502
+ -0.0190459   0.7226851  -1.96892997 -0.65507131 -0.10811494  0.34778046
+  3.17991669]
+  ||w*|| = 8.935563
+  Margin = 1/||w*|| = 0.111912
+
+Slack variables (ε):
+  Total violation: Σε = 136.026857
+  Max slack: 4.150824
+  Points with slack > 0: 209
+
+Support Vectors:
+  Total support vectors: 222
+  Percentage: 18.6%
+  Indices: [  7  10  34  53  61  68 232 268 295 329 337 339 340 343 347 353 356 359
+ 360 363]...
+  Points exactly on margin: 13
+  Misclassified points: 43
+
+######################################################################
+CLASS PAIR 8/10: mandarin vs onion
+######################################################################
+  Class +1: mandarin (628 samples)
+  Class -1: onion (638 samples)
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1266
+Feature dimension: d = 19
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1286, 1286) (objective quadratic term)
+  p: (1286,) (objective linear term)
+  A: (2532, 1286) (constraint matrix, 2532 constraints)
+  c: (2532,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 361.270071
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = 0.075343
+Weight vector: w* = [ 3.61924068 -0.80742039 -3.36498552 -1.32848741 -1.17901206 -0.23972514
+  0.12785971  1.48263266 -3.36498552  3.2202564  -1.20527155  2.18712579
+ -0.71282798 -0.80967754 -1.94312928 -1.45213577  0.6374521   0.87357987
+  2.28423879]
+  ||w*|| = 8.477363
+  Margin = 1/||w*|| = 0.117961
+
+Slack variables (ε):
+  Total violation: Σε = 325.337229
+  Max slack: 5.963819
+  Points with slack > 0: 391
+
+Support Vectors:
+  Total support vectors: 405
+  Percentage: 32.0%
+  Indices: [ 5  7  8 11 12 13 14 52 59 63 64 70 73 79 80 84 85 86 87 88]...
+  Points exactly on margin: 14
+  Misclassified points: 115
+
+######################################################################
+CLASS PAIR 9/10: mandarin vs potato
+######################################################################
+  Class +1: mandarin (628 samples)
+  Class -1: potato (692 samples)
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1320
+Feature dimension: d = 19
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1340, 1340) (objective quadratic term)
+  p: (1340,) (objective linear term)
+  A: (2640, 1340) (constraint matrix, 2640 constraints)
+  c: (2640,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 482.468910
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -0.020724
+Weight vector: w* = [ 5.30087766  0.83066444 -3.23831423  1.18588989 -1.68589173  0.60969351
+ -2.06047147  1.92397683 -3.23831423  1.44416208 -1.13310968  2.07455887
+ -0.14302664 -0.35620392 -1.11640933 -1.09630758  0.99453741  0.61237834
+  0.84349859]
+  ||w*|| = 8.641454
+  Margin = 1/||w*|| = 0.115721
+
+Slack variables (ε):
+  Total violation: Σε = 445.131549
+  Max slack: 7.616578
+  Points with slack > 0: 514
+
+Support Vectors:
+  Total support vectors: 526
+  Percentage: 39.8%
+  Indices: [  7   8   9  10  11  12  15  17  56  57  71  72  73  74  76  77  79  90
+  96 108]...
+  Points exactly on margin: 12
+  Misclassified points: 125
+
+######################################################################
+CLASS PAIR 10/10: onion vs potato
+######################################################################
+  Class +1: onion (638 samples)
+  Class -1: potato (692 samples)
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1330
+Feature dimension: d = 19
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1350, 1350) (objective quadratic term)
+  p: (1350,) (objective linear term)
+  A: (2660, 1350) (constraint matrix, 2660 constraints)
+  c: (2660,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 696.482426
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -0.840285
+Weight vector: w* = [ 0.2456321   4.45080948  1.4505765   1.47306288  0.09374095 -1.55930074
+ -1.53414533  1.87932402  1.4505765  -1.91227303 -0.42023665  0.30536751
+  0.29623316  0.71140499  0.77198379  0.01157632  1.09521763 -0.92703192
+ -0.85620521]
+  ||w*|| = 6.517862
+  Margin = 1/||w*|| = 0.153425
+
+Slack variables (ε):
+  Total violation: Σε = 675.241164
+  Max slack: 4.365535
+  Points with slack > 0: 711
+
+Support Vectors:
+  Total support vectors: 725
+  Percentage: 54.5%
+  Indices: [ 7  8  9 12 13 14 23 24 25 26 31 33 34 49 52 61 62 63 64 65]...
+  Points exactly on margin: 14
+  Misclassified points: 268
+
+======================================================================
+SUMMARY: ALL CLASS PAIR COMPARISONS (C=1.0)
+======================================================================
+ Class_A  Class_B  Samples_A  Samples_B  Num_SV  SV_Percent  Total_Slack   Margin  Accuracy
+   apple   banana        609        504     294   26.415094   216.661037 0.119776  0.927224
+   apple mandarin        609        628     580   46.887631   500.829067 0.116995  0.849636
+   apple    onion        609        638     767   61.507618   707.012708 0.136199  0.750601
+   apple   potato        609        692     799   61.414297   646.421429 0.082853  0.800154
+  banana mandarin        504        628     493   43.551237   431.205349 0.132026  0.858657
+  banana    onion        504        638     181   15.849387   113.490042 0.127686  0.966725
+  banana   potato        504        692     222   18.561873   136.026857 0.111912  0.964047
+mandarin    onion        628        638     405   31.990521   325.337229 0.117961  0.909163
+mandarin   potato        628        692     526   39.848485   445.131549 0.115721  0.905303
+   onion   potato        638        692     725   54.511278   675.241164 0.153425  0.798496
+
+======================================================================
+ANALYSIS: EASIEST AND HARDEST CLASS PAIRS
+======================================================================
+
+Top 5 EASIEST pairs to separate (highest accuracy):
+ Class_A Class_B  Accuracy   Margin  Num_SV
+  banana   onion  0.966725 0.127686     181
+  banana  potato  0.964047 0.111912     222
+   apple  banana  0.927224 0.119776     294
+mandarin   onion  0.909163 0.117961     405
+mandarin  potato  0.905303 0.115721     526
+
+Top 5 HARDEST pairs to separate (lowest accuracy):
+Class_A  Class_B  Accuracy   Margin  Num_SV
+ banana mandarin  0.858657 0.132026     493
+  apple mandarin  0.849636 0.116995     580
+  apple   potato  0.800154 0.082853     799
+  onion   potato  0.798496 0.153425     725
+  apple    onion  0.750601 0.136199     767
+
+Top 5 pairs with LARGEST margin:
+Class_A  Class_B   Margin  Accuracy  SV_Percent
+  onion   potato 0.153425  0.798496   54.511278
+  apple    onion 0.136199  0.750601   61.507618
+ banana mandarin 0.132026  0.858657   43.551237
+ banana    onion 0.127686  0.966725   15.849387
+  apple   banana 0.119776  0.927224   26.415094
+
+Top 5 pairs with SMALLEST margin:
+ Class_A  Class_B   Margin  Accuracy  SV_Percent
+mandarin    onion 0.117961  0.909163   31.990521
+   apple mandarin 0.116995  0.849636   46.887631
+mandarin   potato 0.115721  0.905303   39.848485
+  banana   potato 0.111912  0.964047   18.561873
+   apple   potato 0.082853  0.800154   61.414297
+
+======================================================================
+DETAILED ANALYSIS: TOP 2 CLASSES BY FREQUENCY
+======================================================================
+
+C-value comparison for potato vs onion:
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1330
+Feature dimension: d = 19
+Regularization parameter: C = 0.01
+
+QP Problem dimensions:
+  Q: (1350, 1350) (objective quadratic term)
+  p: (1350,) (objective linear term)
+  A: (2660, 1350) (constraint matrix, 2660 constraints)
+  c: (2660,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 9.398960
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -0.467136
+Weight vector: w* = [-0.06446364  0.89746379  0.37114656  0.13994493 -0.28635934  0.11082935
+  0.12106729 -0.16415618  0.37114656 -0.1600584  -0.27446682  0.22999167
+  0.1032552   0.32984431  0.18660946 -0.09345648 -0.03771503 -0.64679549
+ -0.21849465]
+  ||w*|| = 1.423004
+  Margin = 1/||w*|| = 0.702739
+
+Slack variables (ε):
+  Total violation: Σε = 838.648976
+  Max slack: 3.553155
+  Points with slack > 0: 1039
+
+Support Vectors:
+  Total support vectors: 1047
+  Percentage: 78.7%
+  Indices: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 18 19 20]...
+  Points exactly on margin: 8
+  Misclassified points: 371
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1330
+Feature dimension: d = 19
+Regularization parameter: C = 0.1
+
+QP Problem dimensions:
+  Q: (1350, 1350) (objective quadratic term)
+  p: (1350,) (objective linear term)
+  A: (2660, 1350) (constraint matrix, 2660 constraints)
+  c: (2660,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 76.874877
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -0.744511
+Weight vector: w* = [-0.27223636  2.21793899  1.10380931  0.51807358 -0.14820249 -0.03057613
+ -0.08713922 -0.26688298  1.10380931 -0.31868438 -0.49506523  0.29959046
+  0.13650883  0.6504659   0.32917514 -0.26153769  0.19154043 -0.88350634
+ -0.49912404]
+  ||w*|| = 3.149853
+  Margin = 1/||w*|| = 0.317475
+
+Slack variables (ε):
+  Total violation: Σε = 719.140905
+  Max slack: 4.397576
+  Points with slack > 0: 813
+
+Support Vectors:
+  Total support vectors: 824
+  Percentage: 62.0%
+  Indices: [ 1  5  7  8  9 10 12 13 14 16 23 24 25 26 31 32 33 34 49 52]...
+  Points exactly on margin: 11
+  Misclassified points: 285
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1330
+Feature dimension: d = 19
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1350, 1350) (objective quadratic term)
+  p: (1350,) (objective linear term)
+  A: (2660, 1350) (constraint matrix, 2660 constraints)
+  c: (2660,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 696.482426
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -0.840285
+Weight vector: w* = [ 0.2456321   4.45080948  1.4505765   1.47306288  0.09374095 -1.55930074
+ -1.53414533  1.87932402  1.4505765  -1.91227303 -0.42023665  0.30536751
+  0.29623316  0.71140499  0.77198379  0.01157632  1.09521763 -0.92703192
+ -0.85620521]
+  ||w*|| = 6.517862
+  Margin = 1/||w*|| = 0.153425
+
+Slack variables (ε):
+  Total violation: Σε = 675.241164
+  Max slack: 4.365535
+  Points with slack > 0: 711
+
+Support Vectors:
+  Total support vectors: 725
+  Percentage: 54.5%
+  Indices: [ 7  8  9 12 13 14 23 24 25 26 31 33 34 49 52 61 62 63 64 65]...
+  Points exactly on margin: 14
+  Misclassified points: 268
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1330
+Feature dimension: d = 19
+Regularization parameter: C = 10.0
+
+QP Problem dimensions:
+  Q: (1350, 1350) (objective quadratic term)
+  p: (1350,) (objective linear term)
+  A: (2660, 1350) (constraint matrix, 2660 constraints)
+  c: (2660,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 6355.640012
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -0.412733
+Weight vector: w* = [ 2.04140899 12.60664589 -0.32163222  2.2096728   0.20482161 -9.08919557
+ -9.19858748 18.11438537 -0.32163222 -4.04055399  0.07261118  0.16020156
+  0.43624785  0.46133813  1.45959359  0.61085801  2.04233335 -0.84500972
+ -0.60911396]
+  ||w*|| = 26.231750
+  Margin = 1/||w*|| = 0.038122
+
+Slack variables (ε):
+  Total violation: Σε = 601.158765
+  Max slack: 4.389051
+  Points with slack > 0: 662
+
+Support Vectors:
+  Total support vectors: 679
+  Percentage: 51.1%
+  Indices: [ 0  3  7  8 12 13 14 23 24 26 31 33 34 52 62 63 65 73 75 77]...
+  Points exactly on margin: 17
+  Misclassified points: 238
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1330
+Feature dimension: d = 19
+Regularization parameter: C = 100.0
+
+QP Problem dimensions:
+  Q: (1350, 1350) (objective quadratic term)
+  p: (1350,) (objective linear term)
+  A: (2660, 1350) (constraint matrix, 2660 constraints)
+  c: (2660,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 56365.439267
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -0.076795
+Weight vector: w* = [ -4.73986385  25.38518102  -3.41963939   2.31997413  -0.75553294
+ -14.09042855 -24.31104699  50.13028645  -3.41963939  -5.04213994
+   0.35232052   0.19106404   0.41518142   0.41217492   1.7386853
+   0.91468078   2.37203332  -0.70297361  -0.58380443]
+  ||w*|| = 63.522239
+  Margin = 1/||w*|| = 0.015743
+
+Slack variables (ε):
+  Total violation: Σε = 543.479019
+  Max slack: 4.802700
+  Points with slack > 0: 575
+
+Support Vectors:
+  Total support vectors: 593
+  Percentage: 44.6%
+  Indices: [ 0  3  7  8 12 13 14 24 33 34 65 73 77 83 87 88 90 91 92 97]...
+  Points exactly on margin: 18
+  Misclassified points: 224
+     C  Num_SV  Total_Slack   Margin  Accuracy
+  0.01    1047   838.648976 0.702739  0.721053
+  0.10     824   719.140905 0.317475  0.785714
+  1.00     725   675.241164 0.153425  0.798496
+ 10.00     679   601.158765 0.038122  0.821053
+100.00     593   543.479019 0.015743  0.831579
+
+======================================================================
+TASK 1.2(a): Visual Inspection of Support Vectors
+======================================================================
+
+Farthest points from hyperplane in each category:
+  Class onion (-1.0): Index 218, Distance = 1.4371
+  Class potato (1.0): Index 878, Distance = 3.0498
+
+Training 2D SVM on PCA features for visualization...
+
+======================================================================
+SOFT-MARGIN LINEAR SVM FROM SCRATCH
+======================================================================
+Training samples: N = 1330
+Feature dimension: d = 2
+Regularization parameter: C = 1.0
+
+QP Problem dimensions:
+  Q: (1333, 1333) (objective quadratic term)
+  p: (1333,) (objective linear term)
+  A: (2660, 1333) (constraint matrix, 2660 constraints)
+  c: (2660,) (constraint vector)
+
+Solving QP problem with cvxopt...
+
+Optimization completed!
+  Status: optimal
+  Optimal value: 1211.952189
+
+======================================================================
+SOLUTION SUMMARY
+======================================================================
+Bias term: b* = -0.401214
+Weight vector: w* = [-2.79819462e-04 -2.83148808e-01]
+  ||w*|| = 0.283149
+  Margin = 1/||w*|| = 3.531710
+
+Slack variables (ε):
+  Total violation: Σε = 1211.912102
+  Max slack: 2.316521
+  Points with slack > 0: 1210
+
+Support Vectors:
+  Total support vectors: 1213
+  Percentage: 91.2%
+  Indices: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]...
+  Points exactly on margin: 3
+  Misclassified points: 628
+
+Saved visualization to 'svm_scratch_analysis.png'
+
+======================================================================
+TASK 1.2(b): Cross-Class Support Vector Similarity
+======================================================================
+
+Support vectors per class:
+  Class potato (+1): 362 support vectors
+  Class onion (-1): 363 support vectors
+
+Cross-class support vector distances:
+  Min distance: 0.0387
+  Mean distance: 5.2626
+  Max distance: 11.3120
+
+  Closest SV pair:
+    Class potato SV index: 298
+    Class onion SV index: 311
+    Distance: 0.0387
+
+Confusion Matrix:
+[[575 117]
+ [151 487]]
+  Off-diagonal confusion: 268 misclassifications
+
+Interpretation:
+  The support vectors closest across classes are the 'boundary points'
+  that define the margin. These points are the most difficult to separate
+  and are often the ones that get confused when the classifier makes errors.
+
+======================================================================
+SVM FROM SCRATCH IMPLEMENTATION COMPLETE
+======================================================================
+
+Output saved to 'svm_output.txt'
