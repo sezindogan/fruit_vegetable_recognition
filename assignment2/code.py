@@ -155,7 +155,7 @@ print("="*70)
 classifiers = {
     # Linear Models
     "Logistic Regression": {
-        "model": LogisticRegression(max_iter=10000, random_state=42),
+        "model": LogisticRegression(max_iter=1000, random_state=42),
         "params": {"C": [0.001, 0.01, 0.1, 1, 10, 100]},
         "description": "Linear Logistic Regression (L2 regularization)"
     },
@@ -169,7 +169,7 @@ classifiers = {
     "Logistic Regression (Poly)": {
         "model": Pipeline([
             ('poly', PolynomialFeatures(include_bias=False)),
-            ('clf', LogisticRegression(max_iter=10000, random_state=42))
+            ('clf', LogisticRegression(max_iter=1000, random_state=42))
         ]),
         "params": {
             "poly__degree": [2, 3],
